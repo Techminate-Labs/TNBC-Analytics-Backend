@@ -26,8 +26,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 3rd party
+    # third party
     'rest_framework',
+
+    # local
+    'v1.constants.apps.ConstantsConfig',
+    'v1.government.apps.GovernmentConfig',
+    'v1.treasury.apps.TreasuryConfig'
 ]
 
 MIDDLEWARE = [
