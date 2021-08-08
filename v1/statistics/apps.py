@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class GovernmentConfig(AppConfig):
+class StatisticConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'v1.government'
+    name = 'v1.statistics'

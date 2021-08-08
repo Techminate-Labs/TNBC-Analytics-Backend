@@ -31,8 +31,7 @@ INSTALLED_APPS = [
 
     # local
     'v1.constants.apps.ConstantsConfig',
-    'v1.government.apps.GovernmentConfig',
-    'v1.treasury.apps.TreasuryConfig'
+    'v1.statistics.apps.StatisticConfig',
 ]
 
 MIDDLEWARE = [
