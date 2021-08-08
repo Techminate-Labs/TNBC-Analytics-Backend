@@ -33,3 +33,8 @@ python manage.py createsuperuser
 # run the development server
 python manage.py runserver
 ```
+Architectural Document : https://drive.google.com/file/d/1c37JACKCF4AORYSMUGrK0ZRdPXFEATtZ/view?usp=sharing
+ERD : https://drive.google.com/file/d/14HPgb8qW5n6zQitLRaWkDuikcX9tZyc-/view?usp=sharing
+Database Design : https://drive.google.com/file/d/1mRUUhH755HjcnaE9bY992LSmNR91GTIj/view?usp=sharing
+UML : https://drive.google.com/file/d/1MtgXngOtMxGCDyccR1mQx4-RcLfrSm3n/view?usp=sharing
+
