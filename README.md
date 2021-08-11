@@ -34,7 +34,7 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-# Application Documents:
+## Application Documents:
 
 Architectural Document: https://drive.google.com/file/d/1c37JACKCF4AORYSMUGrK0ZRdPXFEATtZ/view?usp=sharing
 
