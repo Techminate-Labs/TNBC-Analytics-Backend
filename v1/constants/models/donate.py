@@ -13,6 +13,6 @@ class Donate(models.Model):
 
     def __str__(self):
         return f"{self.title} | {self.public_key}"
-    
+
     class Meta:
         verbose_name_plural = "Donate"
