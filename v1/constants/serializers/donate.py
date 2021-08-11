@@ -7,4 +7,4 @@ class DonateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Donate
-        fields = '__all__'
+        exclude = ('is_active', )
