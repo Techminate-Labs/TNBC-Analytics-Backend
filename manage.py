@@ -3,11 +3,11 @@
 import os
 import sys
 
-from config.helpers.environment import SETTINGS_MODULE
+# from config.helpers.environment import SETTINGS_MODULE
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', SETTINGS_MODULE)
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.development')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
