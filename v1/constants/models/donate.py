@@ -9,6 +9,10 @@ class Donate(models.Model):
     title = models.CharField(max_length=255)
     public_key = models.CharField(max_length=255)
     qr_image = models.URLField()
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.title} | {self.public_key}"
+    
+    class Meta:
+        verbose_name_plural = "Donate"

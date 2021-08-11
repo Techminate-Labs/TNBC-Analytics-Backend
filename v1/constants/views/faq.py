@@ -7,5 +7,5 @@ from ..serializers.faq import FAQSerializer
 class FAQViewSet(mixins.ListModelMixin,
                  viewsets.GenericViewSet):
 
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(is_active=True)
     serializer_class = FAQSerializer
