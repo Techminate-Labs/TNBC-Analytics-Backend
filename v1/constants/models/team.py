@@ -12,6 +12,10 @@ class Team(models.Model):
     role = models.CharField(max_length=255)
     account_number = models.CharField(max_length=255)
     image = models.URLField()
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name} | {self.role} | {self.account_number}"
+
+    class Meta:
+        verbose_name_plural = "Team"

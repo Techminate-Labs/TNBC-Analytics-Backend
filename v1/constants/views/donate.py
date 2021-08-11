@@ -7,5 +7,5 @@ from ..serializers.donate import DonateSerializer
 class DonateViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
 
-    queryset = Donate.objects.all()
+    queryset = Donate.objects.filter(is_active=True)
     serializer_class = DonateSerializer
