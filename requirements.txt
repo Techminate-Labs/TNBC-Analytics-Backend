@@ -3,6 +3,7 @@ atomicwrites==1.4.0
 attrs==21.2.0
 colorama==0.4.4
 Django==3.2.5
+django-cors-headers==3.7.0
 djangorestframework==3.12.4
 flake8==3.9.2
 importlib-metadata==4.6.1
