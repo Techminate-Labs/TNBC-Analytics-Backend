@@ -1,5 +1,5 @@
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.utils import timezone
 
@@ -70,5 +70,22 @@ def scan_chain(account_number):
             else:
                 next_url = None
                 break
+
     scan_tracker.total_scan += 1
     scan_tracker.save()
+
+
+def check_confirmation():
+
+    waiting_confirmations_txs = Transaction.objects.filter(confirmation_status=Transaction.WAITING_CONFIRMATION,
+                                                                 created_at__gt=timezone.now() - timedelta(hours=5))
+
+    for txs in waiting_confirmations_txs:
+
+        r = requests.get(f"http://{BANK_IP}/confirmation_blocks?block={txs.block_id}").json()
+
+        if 'count' in r:
+            if int(r['count']) > 0:
+                txs.total_confirmations = int(r['count'])
+                txs.confirmation_status = Transaction.CONFIRMED
+                txs.save()

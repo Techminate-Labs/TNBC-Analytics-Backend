@@ -62,4 +62,4 @@ class Transaction(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Direction: {self.direction}; Amount: {self.amount}"
+        return f"Direction: {self.direction}; Amount: {self.amount}; {self.confirmation_status}"
