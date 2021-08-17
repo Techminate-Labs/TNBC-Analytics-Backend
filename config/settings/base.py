@@ -14,6 +14,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Application definition
