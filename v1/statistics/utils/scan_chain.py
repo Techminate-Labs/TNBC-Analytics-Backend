@@ -143,4 +143,4 @@ def match_transaction():
 
         txs.payment_type = memo_type
         txs.github_issue_id = github_issue
-        txs.save()
+        txs.save() 
