@@ -17,9 +17,13 @@ class Transaction(models.Model):
     CONFIRMED = 'CONFIRMED'
 
     NEW = 'NEW'
-    IDENTIFIED = 'IDENTIFIED'
     UNIDENTIFIED = 'UNIDENTIFIED'
     IS_FEE = 'IS_FEE'
+
+    TIMESHEET = 'TIMESHEET'
+    PROJECT = 'PROJECT'
+    BOUNTY = 'BOUNTY'
+    MISCELLANEOUS = 'MISCELLANEOUS'
 
     transaction_type_choices = [
         (GOVERNMENT, 'Government'),
@@ -36,9 +40,12 @@ class Transaction(models.Model):
         (CONFIRMED, 'Confirmed'),
     ]
 
-    transaction_status_choices = [
-        (NEW, 'New'),
-        (IDENTIFIED, 'Identified'),
+    payment_type_choices = [
+        (NEW, 'New'),    
+        (TIMESHEET, 'Timesheet'),
+        (PROJECT, 'Project'),
+        (BOUNTY, 'Bounty'),
+        (MISCELLANEOUS, 'Miscellaneous'),
         (UNIDENTIFIED, 'Unidentified'),
         (IS_FEE, 'Is Fee')
     ]
@@ -47,7 +54,7 @@ class Transaction(models.Model):
 
     sender_account_number = models.CharField(max_length=64)
     recipient_account_number = models.CharField(max_length=64)
-    github_issue = models.ForeignKey(GithubIssue, on_delete=models.DO_NOTHING, null=True, blank=True)
+    github_issue_id = models.IntegerField(default=0)
     amount = models.IntegerField()
     memo = models.CharField(max_length=255, null=True, blank=True)
     signature = models.CharField(max_length=255)
@@ -56,7 +63,7 @@ class Transaction(models.Model):
     transaction_type = models.CharField(max_length=255, choices=transaction_type_choices)
     direction = models.CharField(max_length=255, choices=direction_choices)
     confirmation_status = models.CharField(max_length=255, choices=confirmation_status_choices)
-    transaction_status = models.CharField(max_length=255, choices=transaction_status_choices)
+    payment_type = models.CharField(max_length=255, choices=payment_type_choices)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

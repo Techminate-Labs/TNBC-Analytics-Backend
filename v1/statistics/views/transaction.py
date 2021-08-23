@@ -4,9 +4,11 @@ from ..serializers.transaction import TransactionSerializer
 
 from ..models.transactions import Transaction
 
+from ..utils.parse_memo import parse_memo
+
 
 class TransactionListView(mixins.ListModelMixin,
                           viewsets.GenericViewSet):
 
-    queryset = Transaction.objects.exclude(transaction_status=Transaction.IS_FEE)
+    queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
