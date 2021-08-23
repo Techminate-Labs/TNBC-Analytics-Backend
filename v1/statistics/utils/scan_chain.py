@@ -139,7 +139,7 @@ def match_transaction():
         elif memo_type == Transaction.BOUNTY:
             Statistic.objects.all().update(total_paid_as_bounty=F('total_paid_as_bounty') + txs.amount)
         elif memo_type == Transaction.PROJECT:
-            Statistic.objects.all().update(total_paid_to_projects=F('total_paid_to_projects') + txs.amount)        
+            Statistic.objects.all().update(total_paid_to_projects=F('total_paid_to_projects') + txs.amount)
 
         txs.payment_type = memo_type
         txs.github_issue_id = github_issue
