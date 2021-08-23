@@ -76,6 +76,8 @@ def scan_chain(account_number):
 
     scan_tracker.last_scanned = timezone.now()
     scan_tracker.save()
+    check_confirmation()
+    match_transaction()
 
 
 def check_confirmation():
@@ -132,8 +134,3 @@ def match_transaction():
         txs.payment_type = memo_type
         txs.github_issue_id = github_issue
         txs.save()
-
-
-scan_chain("23676c35fce177aef2412e3ab12d22bf521ed423c6f55b8922c336500a1a27c5")
-check_confirmation()
-match_transaction()
