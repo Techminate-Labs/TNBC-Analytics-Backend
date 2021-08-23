@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     # third party
     'rest_framework',
     'corsheaders',
+    'django_filters',
 
     # local
     'v1.constants.apps.ConstantsConfig',

@@ -94,17 +94,29 @@ def check_confirmation():
 
                 if txs.transaction_type == Transaction.TREASURY and txs.direction == Transaction.INCOMING:
                     TreasuryStatistic.objects.filter(account_number=txs.recipient_account_number).update(total_tnbc_spent=F('total_tnbc_spent')-txs.amount,
-                                                                                                         balance=F('balance')+txs.amount)
+                                                                                                         balance=F('balance')+txs.amount,
+                                                                                                         total_transactions=F('total_transactions')+1,
+                                                                                                         last_transaction_amount=txs.amount,
+                                                                                                         last_transaction_at=timezone.now())
                 elif txs.transaction_type == Transaction.TREASURY and txs.direction == Transaction.OUTGOING:
                     TreasuryStatistic.objects.filter(account_number=txs.sender_account_number).update(total_tnbc_spent=F('total_tnbc_spent')+txs.amount,
-                                                                                                      balance=F('balance')-txs.amount)
-                
+                                                                                                      balance=F('balance')-txs.amount,
+                                                                                                      total_transactions=F('total_transactions')+1,
+                                                                                                      last_transaction_amount=txs.amount,
+                                                                                                      last_transaction_at=timezone.now())
+
                 elif txs.transaction_type == Transaction.GOVERNMENT and txs.direction == Transaction.INCOMING:
                     GovernmentStatistic.objects.all().update(total_tnbc_incoming=F('total_tnbc_incoming')+txs.amount,
-                                                             balance=F('balance')+txs.amount)
+                                                             balance=F('balance')+txs.amount,
+                                                             total_transactions=F('total_transactions')+1,
+                                                             last_transaction_amount=txs.amount,
+                                                             last_transaction_at=timezone.now())
                 elif txs.transaction_type == Transaction.GOVERNMENT and txs.direction == Transaction.OUTGOING:
                     GovernmentStatistic.objects.all().update(total_tnbc_spent=F('total_tnbc_spent')+txs.amount,
-                                                             balance=F('balance')-txs.amount)                  
+                                                             balance=F('balance')-txs.amount,
+                                                             total_transactions=F('total_transactions')+1,
+                                                             last_transaction_amount=txs.amount,
+                                                             last_transaction_at=timezone.now())                  
                 txs.save()
 
 
@@ -122,6 +134,6 @@ def match_transaction():
         txs.save()
 
 
-scan_chain("5ad13fd8cc674da7a3ad35426e0fcfe3a3157a044ebda0f54b9b32ee873ea921")
+scan_chain("23676c35fce177aef2412e3ab12d22bf521ed423c6f55b8922c336500a1a27c5")
 check_confirmation()
 match_transaction()
