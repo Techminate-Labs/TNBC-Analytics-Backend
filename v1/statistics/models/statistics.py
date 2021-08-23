@@ -10,10 +10,9 @@ class Statistic(models.Model):
     total_paid_to_projects = models.IntegerField()
     total_paid_to_core_team = models.IntegerField()
     total_paid_as_bounty = models.IntegerField()
-    total_paid_by_government = models.IntegerField()
 
     circulating_supply = models.IntegerField()
     max_supply = models.IntegerField()
 
     def __str__(self):
-        return super().__str__()
+        return f"Project: {self.total_paid_to_projects}; CoreTeam: {self.total_paid_to_core_team}; Bounty: {self.total_paid_as_bounty}"
