@@ -18,7 +18,7 @@ def parse_memo(memo):
             memo_type = Transaction.PROJECT
         elif splited_memo[1] in BOUNTY_REQUEST_MEMO_TAG:
             memo_type = Transaction.BOUNTY
-        
+
         try:
             github_issue = int(splited_memo[2])
         except:

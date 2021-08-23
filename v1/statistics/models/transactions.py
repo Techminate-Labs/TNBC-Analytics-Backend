@@ -2,8 +2,6 @@ import uuid
 
 from django.db import models
 
-from .github import GithubIssue
-
 
 class Transaction(models.Model):
 
@@ -41,7 +39,7 @@ class Transaction(models.Model):
     ]
 
     payment_type_choices = [
-        (NEW, 'New'),    
+        (NEW, 'New'),
         (TIMESHEET, 'Timesheet'),
         (PROJECT, 'Project'),
         (BOUNTY, 'Bounty'),

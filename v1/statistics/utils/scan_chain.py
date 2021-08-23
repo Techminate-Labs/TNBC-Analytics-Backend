@@ -2,6 +2,7 @@ import requests
 from datetime import datetime, timedelta
 
 from django.utils import timezone
+from django.db.models import F
 
 from rest_framework import serializers
 
@@ -10,6 +11,7 @@ from v1.constants.constants import BANK_IP
 from ..models.transactions import Transaction
 from ..models.scan_tracker import ScanTracker
 from ..models.treasury import TreasuryStatistic
+from ..models.government import GovernmentStatistic
 
 from ..utils.parse_memo import parse_memo
 
@@ -89,6 +91,20 @@ def check_confirmation():
             if int(r['count']) > 0:
                 txs.total_confirmations = int(r['count'])
                 txs.confirmation_status = Transaction.CONFIRMED
+
+                if txs.transaction_type == Transaction.TREASURY and txs.direction == Transaction.INCOMING:
+                    TreasuryStatistic.objects.filter(account_number=txs.recipient_account_number).update(total_tnbc_spent=F('total_tnbc_spent')-txs.amount,
+                                                                                                         balance=F('balance')+txs.amount)
+                elif txs.transaction_type == Transaction.TREASURY and txs.direction == Transaction.OUTGOING:
+                    TreasuryStatistic.objects.filter(account_number=txs.sender_account_number).update(total_tnbc_spent=F('total_tnbc_spent')+txs.amount,
+                                                                                                      balance=F('balance')-txs.amount)
+                
+                elif txs.transaction_type == Transaction.GOVERNMENT and txs.direction == Transaction.INCOMING:
+                    GovernmentStatistic.objects.all().update(total_tnbc_incoming=F('total_tnbc_incoming')+txs.amount,
+                                                             balance=F('balance')+txs.amount)
+                elif txs.transaction_type == Transaction.GOVERNMENT and txs.direction == Transaction.OUTGOING:
+                    GovernmentStatistic.objects.all().update(total_tnbc_spent=F('total_tnbc_spent')+txs.amount,
+                                                             balance=F('balance')-txs.amount)                  
                 txs.save()
 
 
@@ -96,7 +112,7 @@ def match_transaction():
 
     confirmed_new_txs = Transaction.objects.filter(confirmation_status=Transaction.CONFIRMED,
                                                    payment_type=Transaction.NEW)
-    
+
     for txs in confirmed_new_txs:
 
         memo_type, github_issue = parse_memo(txs.memo)
@@ -105,6 +121,7 @@ def match_transaction():
         txs.github_issue_id = github_issue
         txs.save()
 
-scan_chain("23676c35fce177aef2412e3ab12d22bf521ed423c6f55b8922c336500a1a27c5")
+
+scan_chain("5ad13fd8cc674da7a3ad35426e0fcfe3a3157a044ebda0f54b9b32ee873ea921")
 check_confirmation()
 match_transaction()
