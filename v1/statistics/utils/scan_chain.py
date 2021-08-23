@@ -12,6 +12,7 @@ from ..models.transactions import Transaction
 from ..models.scan_tracker import ScanTracker
 from ..models.treasury import TreasuryStatistic
 from ..models.government import GovernmentStatistic
+from ..models.statistics import Statistic
 
 from ..utils.parse_memo import parse_memo
 
@@ -36,12 +37,14 @@ def scan_chain(account_number):
     while next_url:
 
         try:
-            r = requests.get(TNBC_TRANSACTION_SCAN_URL).json()
+            r = requests.get(next_url).json()
         except requests.exceptions.RequestException:
             error = {"error": "Could not scan TNBC chain!!"}
             raise serializers.ValidationError(error)
 
         next_url = r['next']
+
+        print(next_url)
 
         for txs in r['results']:
 
@@ -130,6 +133,13 @@ def match_transaction():
     for txs in confirmed_new_txs:
 
         memo_type, github_issue = parse_memo(txs.memo)
+
+        if memo_type == Transaction.TIMESHEET:
+            Statistic.objects.all().update(total_paid_to_core_team=F('total_paid_to_core_team') + txs.amount)
+        elif memo_type == Transaction.BOUNTY:
+            Statistic.objects.all().update(total_paid_as_bounty=F('total_paid_as_bounty') + txs.amount)
+        elif memo_type == Transaction.PROJECT:
+            Statistic.objects.all().update(total_paid_to_projects=F('total_paid_to_projects') + txs.amount)        
 
         txs.payment_type = memo_type
         txs.github_issue_id = github_issue
