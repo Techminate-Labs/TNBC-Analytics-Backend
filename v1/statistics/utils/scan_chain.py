@@ -93,30 +93,30 @@ def check_confirmation():
                 txs.confirmation_status = Transaction.CONFIRMED
 
                 if txs.transaction_type == Transaction.TREASURY and txs.direction == Transaction.INCOMING:
-                    TreasuryStatistic.objects.filter(account_number=txs.recipient_account_number).update(total_tnbc_spent=F('total_tnbc_spent')-txs.amount,
-                                                                                                         balance=F('balance')+txs.amount,
-                                                                                                         total_transactions=F('total_transactions')+1,
+                    TreasuryStatistic.objects.filter(account_number=txs.recipient_account_number).update(total_tnbc_spent=F('total_tnbc_spent') - txs.amount,
+                                                                                                         balance=F('balance') + txs.amount,
+                                                                                                         total_transactions=F('total_transactions') + 1,
                                                                                                          last_transaction_amount=txs.amount,
                                                                                                          last_transaction_at=timezone.now())
                 elif txs.transaction_type == Transaction.TREASURY and txs.direction == Transaction.OUTGOING:
-                    TreasuryStatistic.objects.filter(account_number=txs.sender_account_number).update(total_tnbc_spent=F('total_tnbc_spent')+txs.amount,
-                                                                                                      balance=F('balance')-txs.amount,
-                                                                                                      total_transactions=F('total_transactions')+1,
+                    TreasuryStatistic.objects.filter(account_number=txs.sender_account_number).update(total_tnbc_spent=F('total_tnbc_spent') + txs.amount,
+                                                                                                      balance=F('balance') - txs.amount,
+                                                                                                      total_transactions=F('total_transactions') + 1,
                                                                                                       last_transaction_amount=txs.amount,
                                                                                                       last_transaction_at=timezone.now())
 
                 elif txs.transaction_type == Transaction.GOVERNMENT and txs.direction == Transaction.INCOMING:
-                    GovernmentStatistic.objects.all().update(total_tnbc_incoming=F('total_tnbc_incoming')+txs.amount,
-                                                             balance=F('balance')+txs.amount,
-                                                             total_transactions=F('total_transactions')+1,
+                    GovernmentStatistic.objects.all().update(total_tnbc_incoming=F('total_tnbc_incoming') + txs.amount,
+                                                             balance=F('balance') + txs.amount,
+                                                             total_transactions=F('total_transactions') + 1,
                                                              last_transaction_amount=txs.amount,
                                                              last_transaction_at=timezone.now())
                 elif txs.transaction_type == Transaction.GOVERNMENT and txs.direction == Transaction.OUTGOING:
-                    GovernmentStatistic.objects.all().update(total_tnbc_spent=F('total_tnbc_spent')+txs.amount,
-                                                             balance=F('balance')-txs.amount,
-                                                             total_transactions=F('total_transactions')+1,
+                    GovernmentStatistic.objects.all().update(total_tnbc_spent=F('total_tnbc_spent') + txs.amount,
+                                                             balance=F('balance') - txs.amount,
+                                                             total_transactions=F('total_transactions') + 1,
                                                              last_transaction_amount=txs.amount,
-                                                             last_transaction_at=timezone.now())                  
+                                                             last_transaction_at=timezone.now())
                 txs.save()
 
 

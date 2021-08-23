@@ -21,7 +21,7 @@ def parse_memo(memo):
 
         try:
             github_issue = int(splited_memo[2])
-        except:
+        except ValueError:
             pass
 
     return memo_type, github_issue
