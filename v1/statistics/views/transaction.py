@@ -5,6 +5,8 @@ from ..serializers.transaction import TransactionSerializer
 
 from ..models.transactions import Transaction
 
+from ..filters import CustomTransactionFilter
+
 
 class TransactionListView(mixins.ListModelMixin,
                           viewsets.GenericViewSet):
@@ -13,4 +15,4 @@ class TransactionListView(mixins.ListModelMixin,
     serializer_class = TransactionSerializer
 
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['transaction_type']
+    filter_class = CustomTransactionFilter

@@ -19,6 +19,8 @@ from ..utils.parse_memo import parse_memo
 
 def scan_chain(account_number):
 
+    print("Fetching transactions from the BANK_IP")
+
     TNBC_TRANSACTION_SCAN_URL = f"http://{BANK_IP}/bank_transactions?account_number={account_number}&block__sender=&fee=&recipient="
 
     next_url = TNBC_TRANSACTION_SCAN_URL
@@ -85,15 +87,19 @@ def scan_chain(account_number):
 
 def check_confirmation():
 
+    print("Checking the transaction confirmations!!")
+
     waiting_confirmations_txs = Transaction.objects.filter(confirmation_status=Transaction.WAITING_CONFIRMATION,
                                                            created_at__gt=timezone.now() - timedelta(hours=1))
 
     for txs in waiting_confirmations_txs:
+        print(txs)
 
         r = requests.get(f"http://{BANK_IP}/confirmation_blocks?block={txs.block_id}").json()
 
         if 'count' in r:
             if int(r['count']) > 0:
+
                 txs.total_confirmations = int(r['count'])
                 txs.confirmation_status = Transaction.CONFIRMED
 
@@ -127,10 +133,14 @@ def check_confirmation():
 
 def match_transaction():
 
+    print("Associating the confirmed transactions!!")
+
     confirmed_new_txs = Transaction.objects.filter(confirmation_status=Transaction.CONFIRMED,
                                                    payment_type=Transaction.NEW)
 
     for txs in confirmed_new_txs:
+
+        print(txs)
 
         memo_type, github_issue = parse_memo(txs.memo)
 
@@ -143,4 +153,4 @@ def match_transaction():
 
         txs.payment_type = memo_type
         txs.github_issue_id = github_issue
-        txs.save() 
+        txs.save()
