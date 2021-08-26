@@ -11,7 +11,7 @@ from ..filters import CustomTransactionFilter
 class TransactionListView(mixins.ListModelMixin,
                           viewsets.GenericViewSet):
 
-    queryset = Transaction.objects.all()
+    queryset = Transaction.objects.all().order_by('txs_sent_at')
     serializer_class = TransactionSerializer
 
     filter_backends = [DjangoFilterBackend]
