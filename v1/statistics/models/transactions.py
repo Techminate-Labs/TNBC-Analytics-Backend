@@ -62,6 +62,7 @@ class Transaction(models.Model):
     direction = models.CharField(max_length=255, choices=direction_choices)
     confirmation_status = models.CharField(max_length=255, choices=confirmation_status_choices)
     payment_type = models.CharField(max_length=255, choices=payment_type_choices)
+    txs_sent_at = models.DateTimeField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

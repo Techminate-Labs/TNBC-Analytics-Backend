@@ -74,7 +74,8 @@ def scan_chain(account_number):
                                            amount=amount,
                                            block_id=txs['block']['id'],
                                            signature=txs['block']['signature'],
-                                           memo=txs['memo'])
+                                           memo=txs['memo'],
+                                           txs_sent_at=transaction_time)
             else:
                 next_url = None
                 break
