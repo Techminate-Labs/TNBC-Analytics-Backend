@@ -19,6 +19,8 @@ from ..utils.parse_memo import parse_memo
 
 def scan_chain(account_number):
 
+    print("Fetching transactions from the BANK_IP")
+
     TNBC_TRANSACTION_SCAN_URL = f"http://{BANK_IP}/bank_transactions?account_number={account_number}&block__sender=&fee=&recipient="
 
     next_url = TNBC_TRANSACTION_SCAN_URL
@@ -72,7 +74,8 @@ def scan_chain(account_number):
                                            amount=amount,
                                            block_id=txs['block']['id'],
                                            signature=txs['block']['signature'],
-                                           memo=txs['memo'])
+                                           memo=txs['memo'],
+                                           txs_sent_at=transaction_time)
             else:
                 next_url = None
                 break
@@ -85,15 +88,19 @@ def scan_chain(account_number):
 
 def check_confirmation():
 
+    print("Checking the transaction confirmations!!")
+
     waiting_confirmations_txs = Transaction.objects.filter(confirmation_status=Transaction.WAITING_CONFIRMATION,
                                                            created_at__gt=timezone.now() - timedelta(hours=1))
 
     for txs in waiting_confirmations_txs:
+        print(txs)
 
         r = requests.get(f"http://{BANK_IP}/confirmation_blocks?block={txs.block_id}").json()
 
         if 'count' in r:
             if int(r['count']) > 0:
+
                 txs.total_confirmations = int(r['count'])
                 txs.confirmation_status = Transaction.CONFIRMED
 
@@ -102,35 +109,39 @@ def check_confirmation():
                                                                                                          balance=F('balance') + txs.amount,
                                                                                                          total_transactions=F('total_transactions') + 1,
                                                                                                          last_transaction_amount=txs.amount,
-                                                                                                         last_transaction_at=timezone.now())
+                                                                                                         last_transaction_at=txs.txs_sent_at)
                 elif txs.transaction_type == Transaction.TREASURY and txs.direction == Transaction.OUTGOING:
                     TreasuryStatistic.objects.filter(account_number=txs.sender_account_number).update(total_tnbc_spent=F('total_tnbc_spent') + txs.amount,
                                                                                                       balance=F('balance') - txs.amount,
                                                                                                       total_transactions=F('total_transactions') + 1,
                                                                                                       last_transaction_amount=txs.amount,
-                                                                                                      last_transaction_at=timezone.now())
+                                                                                                      last_transaction_at=txs.txs_sent_at)
 
                 elif txs.transaction_type == Transaction.GOVERNMENT and txs.direction == Transaction.INCOMING:
                     GovernmentStatistic.objects.all().update(total_tnbc_incoming=F('total_tnbc_incoming') + txs.amount,
                                                              balance=F('balance') + txs.amount,
                                                              total_transactions=F('total_transactions') + 1,
                                                              last_transaction_amount=txs.amount,
-                                                             last_transaction_at=timezone.now())
+                                                             last_transaction_at=txs.txs_sent_at)
                 elif txs.transaction_type == Transaction.GOVERNMENT and txs.direction == Transaction.OUTGOING:
                     GovernmentStatistic.objects.all().update(total_tnbc_spent=F('total_tnbc_spent') + txs.amount,
                                                              balance=F('balance') - txs.amount,
                                                              total_transactions=F('total_transactions') + 1,
                                                              last_transaction_amount=txs.amount,
-                                                             last_transaction_at=timezone.now())
+                                                             last_transaction_at=txs.txs_sent_at)
                 txs.save()
 
 
 def match_transaction():
 
+    print("Associating the confirmed transactions!!")
+
     confirmed_new_txs = Transaction.objects.filter(confirmation_status=Transaction.CONFIRMED,
                                                    payment_type=Transaction.NEW)
 
     for txs in confirmed_new_txs:
+
+        print(txs)
 
         memo_type, github_issue = parse_memo(txs.memo)
 
@@ -143,4 +154,4 @@ def match_transaction():
 
         txs.payment_type = memo_type
         txs.github_issue_id = github_issue
-        txs.save() 
+        txs.save()
