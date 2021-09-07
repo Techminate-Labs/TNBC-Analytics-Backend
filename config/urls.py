@@ -8,7 +8,7 @@ from v1.statistics.urls import router as statistics_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('chain/', include('v1.statistics.urls'))
+    path('', include('v1.statistics.urls'))
 ]
 
 router = DefaultRouter(trailing_slash=False)
