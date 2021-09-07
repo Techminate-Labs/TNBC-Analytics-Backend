@@ -14,14 +14,21 @@ class TreasuryChart(APIView):
 
         days = request.query_params.get("days", 7)
 
-        try:
-            days = int(days)
-        except ValueError:
-            error = {"error": "Invalid day format!!"}
-            raise serializers.ValidationError(error)
 
-        transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY,
-                                                  txs_sent_at__gt=timezone.now() - timedelta(days=days))
+        if days == "max":
+
+            transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY)
+
+        else:
+
+            try:
+                days = int(days)
+            except ValueError:
+                error = {"error": "Invalid day format!!"}
+                raise serializers.ValidationError(error)
+
+            transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY,
+                                                    txs_sent_at__gt=timezone.now() - timedelta(days=days))
 
         temp = []
         data = []
@@ -33,6 +40,7 @@ class TreasuryChart(APIView):
             temp = []
 
         data = {
+            "count": transactions.count(),
             "data": data
         }
 
@@ -45,14 +53,20 @@ class GovernmentChart(APIView):
 
         days = request.query_params.get("days", 7)
 
-        try:
-            days = int(days)
-        except ValueError:
-            error = {"error": "Invalid day format!!"}
-            raise serializers.ValidationError(error)
+        if days == "max":
 
-        transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT,
-                                                  txs_sent_at__gt=timezone.now() - timedelta(days=days))
+            transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT)
+
+        else:
+
+            try:
+                days = int(days)
+            except ValueError:
+                error = {"error": "Invalid day format!!"}
+                raise serializers.ValidationError(error)
+
+            transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT,
+                                                    txs_sent_at__gt=timezone.now() - timedelta(days=days))
 
         temp = []
         data = []
@@ -64,6 +78,7 @@ class GovernmentChart(APIView):
             temp = []
 
         data = {
+            "count": transactions.count(),
             "data": data
         }
 
@@ -76,13 +91,19 @@ class HomepageChart(APIView):
 
         days = request.query_params.get("days", 7)
 
-        try:
-            days = int(days)
-        except ValueError:
-            error = {"error": "Invalid day format!!"}
-            raise serializers.ValidationError(error)
+        if days == "max":
 
-        transactions = Transaction.objects.filter(txs_sent_at__gt=timezone.now() - timedelta(days=days))
+            transactions = Transaction.objects.all()
+
+        else:
+
+            try:
+                days = int(days)
+            except ValueError:
+                error = {"error": "Invalid day format!!"}
+                raise serializers.ValidationError(error)
+
+            transactions = Transaction.objects.filter(txs_sent_at__gt=timezone.now() - timedelta(days=days))
 
         temp = []
         data = []
@@ -94,6 +115,7 @@ class HomepageChart(APIView):
             temp = []
 
         data = {
+            "count": transactions.count(),
             "data": data
         }
 
