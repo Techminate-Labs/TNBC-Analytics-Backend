@@ -14,13 +14,10 @@ class TreasuryChart(APIView):
 
         days = request.query_params.get("days", 7)
 
-
         if days == "max":
-
             transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY)
 
         else:
-
             try:
                 days = int(days)
             except ValueError:
@@ -28,7 +25,7 @@ class TreasuryChart(APIView):
                 raise serializers.ValidationError(error)
 
             transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY,
-                                                    txs_sent_at__gt=timezone.now() - timedelta(days=days))
+                                                      txs_sent_at__gt=timezone.now() - timedelta(days=days))
 
         temp = []
         data = []
@@ -48,7 +45,7 @@ class TreasuryChart(APIView):
 
 
 class GovernmentChart(APIView):
-    
+
     def get(self, request):
 
         days = request.query_params.get("days", 7)
@@ -66,7 +63,7 @@ class GovernmentChart(APIView):
                 raise serializers.ValidationError(error)
 
             transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT,
-                                                    txs_sent_at__gt=timezone.now() - timedelta(days=days))
+                                                      txs_sent_at__gt=timezone.now() - timedelta(days=days))
 
         temp = []
         data = []
@@ -86,7 +83,7 @@ class GovernmentChart(APIView):
 
 
 class HomepageChart(APIView):
-    
+
     def get(self, request):
 
         days = request.query_params.get("days", 7)
