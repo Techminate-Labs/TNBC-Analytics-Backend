@@ -15,4 +15,4 @@ class CustomTransactionFilter(django_filters.FilterSet):
 
     class Meta:
         model = Transaction
-        fields = ('payment_type', 'transaction_type', 'direction')
+        fields = ('payment_type', 'transaction_type', 'direction', 'github_issue_id')
