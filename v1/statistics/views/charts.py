@@ -1,4 +1,4 @@
-from rest_framework.views import APIView
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status, serializers
 
@@ -6,114 +6,144 @@ from datetime import timedelta
 from django.utils import timezone
 
 from ..models.transactions import Transaction
+from ..serializers.charts import ChartSerializer
 
 
-class TreasuryChart(APIView):
+class TreasuryChartViewSet(viewsets.GenericViewSet):
+    '''
+    Data up to number of days ago (eg. 1,14,30,max)
+    '''
 
-    def get(self, request):
+    serializer_class = ChartSerializer
 
-        days = request.query_params.get("days", 7)
+    def create(self, request, format=None):
 
-        if days == "max":
-            transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY)
+        serializer = ChartSerializer(data=request.data)
 
-        else:
-            try:
-                days = int(days)
-            except ValueError:
-                error = {"error": "Invalid day format!!"}
-                raise serializers.ValidationError(error)
+        if serializer.is_valid():
 
-            transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY,
-                                                      txs_sent_at__gt=timezone.now() - timedelta(days=days))
+            days = serializer.data['days']
 
-        temp = []
-        data = []
+            if days == "max":
+                transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY)
 
-        for txs in transactions:
-            temp.append(txs.amount)
-            temp.append(txs.txs_sent_at)
-            data.append(temp)
+            else:
+                try:
+                    days = int(days)
+                except ValueError:
+                    error = {"error": "Invalid day format!!"}
+                    raise serializers.ValidationError(error)
+
+                transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY,
+                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days))
+
             temp = []
+            data = []
 
-        data = {
-            "count": transactions.count(),
-            "data": data
-        }
+            for txs in transactions:
+                temp.append(txs.amount)
+                temp.append(txs.txs_sent_at)
+                data.append(temp)
+                temp = []
 
-        return Response(data, status=status.HTTP_200_OK)
+            data = {
+                "count": transactions.count(),
+                "data": data
+            }
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class GovernmentChart(APIView):
+class GovernmentChartViewSet(viewsets.GenericViewSet):
+    '''
+    Data up to number of days ago (eg. 1,14,30,max)
+    '''
 
-    def get(self, request):
+    serializer_class = ChartSerializer
 
-        days = request.query_params.get("days", 7)
+    def create(self, request, format=None):
 
-        if days == "max":
+        serializer = ChartSerializer(data=request.data)
 
-            transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT)
+        if serializer.is_valid():
 
-        else:
+            days = serializer.data['days']
 
-            try:
-                days = int(days)
-            except ValueError:
-                error = {"error": "Invalid day format!!"}
-                raise serializers.ValidationError(error)
+            if days == "max":
+                transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT)
+            else:
+                try:
+                    days = int(days)
+                except ValueError:
+                    error = {"error": "Invalid day format!!"}
+                    raise serializers.ValidationError(error)
 
-            transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT,
-                                                      txs_sent_at__gt=timezone.now() - timedelta(days=days))
+                transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT,
+                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days))
 
-        temp = []
-        data = []
-
-        for txs in transactions:
-            temp.append(txs.amount)
-            temp.append(txs.txs_sent_at)
-            data.append(temp)
             temp = []
+            data = []
 
-        data = {
-            "count": transactions.count(),
-            "data": data
-        }
+            for txs in transactions:
+                temp.append(txs.amount)
+                temp.append(txs.txs_sent_at)
+                data.append(temp)
+                temp = []
 
-        return Response(data, status=status.HTTP_200_OK)
+            data = {
+                "count": transactions.count(),
+                "data": data
+            }
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class HomepageChart(APIView):
+class HomepageChartViewSet(viewsets.GenericViewSet):
+    '''
+    Data up to number of days ago (eg. 1,14,30,max)
+    '''
 
-    def get(self, request):
+    serializer_class = ChartSerializer
 
-        days = request.query_params.get("days", 7)
+    def create(self, request, format=None):
 
-        if days == "max":
+        serializer = ChartSerializer(data=request.data)
 
-            transactions = Transaction.objects.all()
+        if serializer.is_valid():
 
-        else:
+            days = serializer.data['days']
 
-            try:
-                days = int(days)
-            except ValueError:
-                error = {"error": "Invalid day format!!"}
-                raise serializers.ValidationError(error)
+            if days == "max":
+                transactions = Transaction.objects.all()
 
-            transactions = Transaction.objects.filter(txs_sent_at__gt=timezone.now() - timedelta(days=days))
+            else:
 
-        temp = []
-        data = []
+                try:
+                    days = int(days)
+                except ValueError:
+                    error = {"error": "Invalid day format!!"}
+                    raise serializers.ValidationError(error)
 
-        for txs in transactions:
-            temp.append(txs.amount)
-            temp.append(txs.txs_sent_at)
-            data.append(temp)
+                transactions = Transaction.objects.filter(txs_sent_at__gt=timezone.now() - timedelta(days=days))
+
             temp = []
+            data = []
 
-        data = {
-            "count": transactions.count(),
-            "data": data
-        }
+            for txs in transactions:
+                temp.append(txs.amount)
+                temp.append(txs.txs_sent_at)
+                data.append(temp)
+                temp = []
 
-        return Response(data, status=status.HTTP_200_OK)
+            data = {
+                "count": transactions.count(),
+                "data": data
+            }
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

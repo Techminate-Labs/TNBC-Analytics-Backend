@@ -7,7 +7,7 @@ from .views.transaction import TransactionListView
 from .views.government import GovernmentViewSet
 from .views.treasury import TreasuryViewSet
 from .views.scan_chain import ChainScan
-from .views.charts import TreasuryChart, GovernmentChart, HomepageChart
+from .views.charts import TreasuryChartViewSet, GovernmentChartViewSet, HomepageChartViewSet
 from .views.statistics import StatisticsViewSet
 
 router = SimpleRouter(trailing_slash=False)
@@ -15,12 +15,12 @@ router.register('transaction', TransactionListView)
 router.register('government', GovernmentViewSet)
 router.register('treasury', TreasuryViewSet)
 router.register('statistics', StatisticsViewSet)
+router.register('treasury-chart', TreasuryChartViewSet, basename='treasury-chart')
+router.register('government-chart', GovernmentChartViewSet, basename='government-chart')
+router.register('homepage-chart', HomepageChartViewSet, basename='homepage-chart')
 
 urlpatterns = [
-    path('chain-scan', ChainScan.as_view()),
-    path('treasury-chart', TreasuryChart.as_view()),
-    path('government-chart', GovernmentChart.as_view()),
-    path('homepage-chart', HomepageChart.as_view())
+    path('chain-scan', ChainScan.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
