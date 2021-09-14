@@ -25,7 +25,7 @@ class TreasuryChartViewSet(viewsets.GenericViewSet):
             days = serializer.data['days']
 
             if days == "max":
-                transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY)
+                transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY).exclude(payment_type=Transaction.IS_FEE)
 
             else:
                 try:
@@ -35,7 +35,7 @@ class TreasuryChartViewSet(viewsets.GenericViewSet):
                     raise serializers.ValidationError(error)
 
                 transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY,
-                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days))
+                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(payment_type=Transaction.IS_FEE)
 
             temp = []
             data = []
@@ -72,7 +72,7 @@ class GovernmentChartViewSet(viewsets.GenericViewSet):
             days = serializer.data['days']
 
             if days == "max":
-                transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT)
+                transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT).exclude(payment_type=Transaction.IS_FEE)
             else:
                 try:
                     days = int(days)
@@ -81,7 +81,7 @@ class GovernmentChartViewSet(viewsets.GenericViewSet):
                     raise serializers.ValidationError(error)
 
                 transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT,
-                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days))
+                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(payment_type=Transaction.IS_FEE)
 
             temp = []
             data = []
@@ -118,7 +118,7 @@ class HomepageChartViewSet(viewsets.GenericViewSet):
             days = serializer.data['days']
 
             if days == "max":
-                transactions = Transaction.objects.all()
+                transactions = Transaction.objects.all().exclude(payment_type=Transaction.IS_FEE)
 
             else:
 
@@ -128,7 +128,7 @@ class HomepageChartViewSet(viewsets.GenericViewSet):
                     error = {"error": "Invalid day format!!"}
                     raise serializers.ValidationError(error)
 
-                transactions = Transaction.objects.filter(txs_sent_at__gt=timezone.now() - timedelta(days=days))
+                transactions = Transaction.objects.filter(txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(payment_type=Transaction.IS_FEE)
 
             temp = []
             data = []
