@@ -41,8 +41,8 @@ class TreasuryChartViewSet(viewsets.GenericViewSet):
             data = []
 
             for txs in transactions:
-                temp.append(txs.amount)
                 temp.append(txs.txs_sent_at)
+                temp.append(txs.amount)
                 data.append(temp)
                 temp = []
 
@@ -87,8 +87,8 @@ class GovernmentChartViewSet(viewsets.GenericViewSet):
             data = []
 
             for txs in transactions:
-                temp.append(txs.amount)
                 temp.append(txs.txs_sent_at)
+                temp.append(txs.amount)
                 data.append(temp)
                 temp = []
 
@@ -134,8 +134,8 @@ class HomepageChartViewSet(viewsets.GenericViewSet):
             data = []
 
             for txs in transactions:
-                temp.append(txs.amount)
                 temp.append(txs.txs_sent_at)
+                temp.append(txs.amount)
                 data.append(temp)
                 temp = []
 
