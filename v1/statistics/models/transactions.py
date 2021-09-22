@@ -22,6 +22,7 @@ class Transaction(models.Model):
     PROJECT = 'PROJECT'
     BOUNTY = 'BOUNTY'
     MISCELLANEOUS = 'MISCELLANEOUS'
+    INTERNAL = 'INTERNAL'
 
     transaction_type_choices = [
         (GOVERNMENT, 'Government'),
@@ -44,6 +45,7 @@ class Transaction(models.Model):
         (PROJECT, 'Project'),
         (BOUNTY, 'Bounty'),
         (MISCELLANEOUS, 'Miscellaneous'),
+        (INTERNAL, 'Internal'),
         (UNIDENTIFIED, 'Unidentified'),
         (IS_FEE, 'Is Fee')
     ]
