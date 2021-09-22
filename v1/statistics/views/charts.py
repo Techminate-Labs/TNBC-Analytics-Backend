@@ -129,7 +129,7 @@ class HomepageChartViewSet(viewsets.GenericViewSet):
                     error = {"error": "Invalid day format!!"}
                     raise serializers.ValidationError(error)
 
-                transactions = Transaction.objects.filter(txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(payment_type=Transaction.IS_FEE)
+                transactions = Transaction.objects.filter(txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL))
 
             temp = []
             data = []
