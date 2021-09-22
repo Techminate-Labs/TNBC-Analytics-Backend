@@ -4,6 +4,7 @@ from rest_framework import status, serializers
 
 from datetime import timedelta
 from django.utils import timezone
+from django.db.models import Q
 
 from ..models.transactions import Transaction
 from ..serializers.charts import ChartSerializer
@@ -72,7 +73,7 @@ class GovernmentChartViewSet(viewsets.GenericViewSet):
             days = serializer.data['days']
 
             if days == "max":
-                transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT).exclude(payment_type=Transaction.IS_FEE)
+                transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT).exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL))
             else:
                 try:
                     days = int(days)
@@ -81,7 +82,7 @@ class GovernmentChartViewSet(viewsets.GenericViewSet):
                     raise serializers.ValidationError(error)
 
                 transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT,
-                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(payment_type=Transaction.IS_FEE)
+                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL))
 
             temp = []
             data = []
@@ -118,7 +119,7 @@ class HomepageChartViewSet(viewsets.GenericViewSet):
             days = serializer.data['days']
 
             if days == "max":
-                transactions = Transaction.objects.all().exclude(payment_type=Transaction.IS_FEE)
+                transactions = Transaction.objects.all().exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL))
 
             else:
 
