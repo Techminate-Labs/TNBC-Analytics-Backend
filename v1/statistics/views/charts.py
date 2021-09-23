@@ -26,7 +26,7 @@ class TreasuryChartViewSet(viewsets.GenericViewSet):
             days = serializer.data['days']
 
             if days == "max":
-                transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY).exclude(payment_type=Transaction.IS_FEE)
+                transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY).exclude(payment_type=Transaction.IS_FEE).order_by('txs_sent_at')
 
             else:
                 try:
@@ -36,7 +36,7 @@ class TreasuryChartViewSet(viewsets.GenericViewSet):
                     raise serializers.ValidationError(error)
 
                 transactions = Transaction.objects.filter(transaction_type=Transaction.TREASURY,
-                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(payment_type=Transaction.IS_FEE)
+                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(payment_type=Transaction.IS_FEE).order_by('txs_sent_at')
 
             temp = []
             data = []
@@ -73,7 +73,7 @@ class GovernmentChartViewSet(viewsets.GenericViewSet):
             days = serializer.data['days']
 
             if days == "max":
-                transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT).exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL))
+                transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT).exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL)).order_by('txs_sent_at')
             else:
                 try:
                     days = int(days)
@@ -82,7 +82,7 @@ class GovernmentChartViewSet(viewsets.GenericViewSet):
                     raise serializers.ValidationError(error)
 
                 transactions = Transaction.objects.filter(transaction_type=Transaction.GOVERNMENT,
-                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL))
+                                                          txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL)).order_by('txs_sent_at')
 
             temp = []
             data = []
@@ -119,7 +119,7 @@ class HomepageChartViewSet(viewsets.GenericViewSet):
             days = serializer.data['days']
 
             if days == "max":
-                transactions = Transaction.objects.all().exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL))
+                transactions = Transaction.objects.all().exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL)).order_by('txs_sent_at')
 
             else:
 
@@ -129,7 +129,7 @@ class HomepageChartViewSet(viewsets.GenericViewSet):
                     error = {"error": "Invalid day format!!"}
                     raise serializers.ValidationError(error)
 
-                transactions = Transaction.objects.filter(txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL))
+                transactions = Transaction.objects.filter(txs_sent_at__gt=timezone.now() - timedelta(days=days)).exclude(Q(payment_type=Transaction.IS_FEE) | Q(payment_type=Transaction.INTERNAL)).order_by('txs_sent_at')
 
             temp = []
             data = []
