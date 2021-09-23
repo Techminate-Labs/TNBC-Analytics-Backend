@@ -14,5 +14,5 @@ class TransactionListView(mixins.ListModelMixin,
     queryset = Transaction.objects.all().order_by('-txs_sent_at')
     serializer_class = TransactionSerializer
 
-    filter_backends = (DjangoFilterBackend)
+    filter_backends = (DjangoFilterBackend, )
     filter_class = CustomTransactionFilter
