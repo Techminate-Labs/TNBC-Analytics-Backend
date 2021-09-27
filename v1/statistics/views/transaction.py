@@ -5,6 +5,8 @@ from ..serializers.transaction import TransactionSerializer
 
 from ..models.transactions import Transaction
 
+from ..pagination import StandardPagination
+
 from ..filters import CustomTransactionFilter
 
 
@@ -16,3 +18,4 @@ class TransactionListView(mixins.ListModelMixin,
 
     filter_backends = (DjangoFilterBackend, )
     filter_class = CustomTransactionFilter
+    pagination_class = StandardPagination
