@@ -26,7 +26,7 @@ DJANGO_APPLICATION_ENVIRONMENT=development
 SECRET_KEY=some-random-string
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET:your_api_secret
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 Create a virtual environment with Python 3.7 or higher. [Guide](https://docs.python.org/3/library/venv.html)
