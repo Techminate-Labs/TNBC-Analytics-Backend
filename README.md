@@ -4,15 +4,29 @@ TNBC Analytics tracks the accountability of tnbc government and provides transpa
 ## Project Setup
 Follow the steps below to set up the project on your environment. If you run into any problems, feel free to leave a GitHub Issue or reach out to any of our communities above.
 
-Clone the project repo.
+### Setup cloudinary for images
+Create a free account at [Cloudinary](https://docs.python.org/3/library/venv.html)
 
-Set required environment variables:
-```shell
+Take note of your `Cloud Name`, `Api Key`, and  `API Secret` you would need them later
+
+### Clone the project repo.
+Fork the project by clicking on the fork button at the top right corner in github, it should then take you to a new repo in your own name. Clone the repo with the code below
+
+`git clone https://github.com/<your_username>/TNBC-Analytics-Backend.git` 
+
+> Change **yourusername** to your github username
+
+**Set required environment variables:**
+
+- Create a `.env` file in the root directory 
+```
+#./env
 # Valid values are development, production, or staging
-export DJANGO_APPLICATION_ENVIRONMENT='development'
-
-# A string with random chars
-export SECRET_KEY='some random string'
+DJANGO_APPLICATION_ENVIRONMENT=development
+SECRET_KEY=some-random-string
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET:your_api_secret
 ```
 
 Create a virtual environment with Python 3.7 or higher. [Guide](https://docs.python.org/3/library/venv.html)
