@@ -8,7 +8,7 @@ class Donate(models.Model):
 
     title = models.CharField(max_length=255)
     public_key = models.CharField(max_length=255)
-    qr_image = models.URLField()
+    qr_image = models.ImageField(upload_to="images/qr/")
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
