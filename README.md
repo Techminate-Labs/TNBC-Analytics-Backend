@@ -44,6 +44,9 @@ python manage.py migrate
 # create super user for admin access
 python manage.py createsuperuser
 
+# Collect static files
+python manage.py collectstatic
+
 # run the development server
 python manage.py runserver
 ```
