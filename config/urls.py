@@ -1,6 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 from rest_framework.routers import DefaultRouter
 from rest_framework import permissions
 
@@ -30,3 +34,4 @@ router = DefaultRouter(trailing_slash=False)
 router.registry.extend(constants_router.registry)
 router.registry.extend(statistics_router.registry)
 urlpatterns += router.urls
+urlpatterns +=  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
