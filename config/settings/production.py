@@ -9,6 +9,6 @@ DATABASES['default'].update(db_from_env)
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
