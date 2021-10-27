@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # local
     "v1.constants.apps.ConstantsConfig",
     "v1.statistics.apps.StatisticConfig",
+    "v2.apps.V2Config"
 ]
 
 MIDDLEWARE = [
