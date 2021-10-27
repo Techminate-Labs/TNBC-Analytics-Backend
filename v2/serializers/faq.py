@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from ..models.faq import FAQ
+from v2.models.faq import Faq
 
 
-class FAQSerializer(serializers.ModelSerializer):
+class FaqSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = FAQ
+        model = Faq
         exclude = ('is_active', )
         depth = 1
