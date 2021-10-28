@@ -7,5 +7,5 @@ urlpatterns = [
 	path('contributors/', contributor.contributors, name="contributors"),
 	path('donates/', donate.donates, name="donates"),
 	path('faqs/', faq.faqs, name="faqs"),
-	path('profiles/', profile.profiles, name="profiles")
+	path('profile/', profile.profiles, name="profiles")
 ]
