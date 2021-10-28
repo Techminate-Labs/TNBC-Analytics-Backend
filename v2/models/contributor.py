@@ -2,7 +2,6 @@ import uuid
 
 from django.db import models
 
-
 class Contributor(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
 

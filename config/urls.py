@@ -11,7 +11,6 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from v1.constants.urls import router as constants_router
 from v1.statistics.urls import router as statistics_router
 
 schema_view = get_schema_view(
@@ -32,7 +31,6 @@ urlpatterns = [
 ]
 
 router = DefaultRouter(trailing_slash=False)
-router.registry.extend(constants_router.registry)
 router.registry.extend(statistics_router.registry)
 urlpatterns += router.urls
 urlpatterns +=  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

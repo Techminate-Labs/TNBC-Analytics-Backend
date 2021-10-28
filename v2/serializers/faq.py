@@ -2,7 +2,6 @@ from rest_framework import serializers
 
 from v2.models.faq import Faq
 
-
 class FaqSerializer(serializers.ModelSerializer):
 
     class Meta:
