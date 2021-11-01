@@ -12,6 +12,14 @@ from v2.config.settings import (
     GOVERNMENT_ACCOUNT_NUMBER
 )
 
+# '_id': bank_transaction['id'],
+# 'amount': bank_transaction['amount'],
+# 'block_id': bank_transaction['block']['id'],
+# 'confirmation_checks': 0,
+# 'is_confirmed': False,
+# 'memo': bank_transaction['memo'],
+# 'sender': bank_transaction['block']['sender']
+
 @api_view(['GET'])
 def treasuryStats(request):
     next_url = (
@@ -77,12 +85,3 @@ def govtStats(request):
             'total_govt_payment' : total,
         }
     return Response(response)
-
-# return Response('message')
-# '_id': bank_transaction['id'],
-# 'amount': bank_transaction['amount'],
-# 'block_id': bank_transaction['block']['id'],
-# 'confirmation_checks': 0,
-# 'is_confirmed': False,
-# 'memo': bank_transaction['memo'],
-# 'sender': bank_transaction['block']['sender']
