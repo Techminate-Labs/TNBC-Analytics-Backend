@@ -11,5 +11,5 @@ DATABASES['default'].update(db_from_env)
 django_heroku.settings(locals())
 
 DEBUG = True
-
+SESSION_COOKIE_DOMAIN = "tnb-analytics.herokuapp.com"
 ALLOWED_HOSTS = ["*"]
